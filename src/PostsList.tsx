@@ -1,13 +1,56 @@
+import { useState, FC } from 'react';
 
 
-function PostsList() {
+interface PostsListProps {
+    title: string,
+    items: string[],
+    onItemsSelected: (index: number) => void
+}
+const PostsList: FC<PostsListProps> = ({ title, items, onItemsSelected }) => {
     console.log('PostsList');
-    const items = ['An item', 'A second item', 'A third item', 'A fourth item', 'And a fifth one'];
+    const [selectedIndex, setSelectedIndex] = useState(0)
+    const [render, setRender] = useState(0);
+
+    const onClick = (index: number) => {
+        console.log('Clicked on', index);
+        setSelectedIndex(index);
+    }
+
+    const addItem = () => {
+        console.log('Adding an item');
+        items.push('A new item');
+        setRender(render + 1);
+
+    }
+
+    const onSelect = () => {
+        console.log('Selected index is', selectedIndex);
+        onItemsSelected(selectedIndex);
+    }
     return (
-        <ul className="list-group">
-            {items.map((item, index) => { return <li className="list-group-item" key={index}>{index}: {item}</li> })}
-        </ul>
+        <>
+            <h1>{title}</h1>
+            <ul className="list-group">
+                {
+                    items.map((item, index) => {
+                        return <li
+                            className={index == selectedIndex ? "list-group-item active" : "list-group-item"}
+                            key={index}
+                            onClick={() => { onClick(index) }}
+                        >
+                            {index}: {item}
+                        </li>
+                    })
+                }
+            </ul >
+            <button className="btn btn-primary m-3" onClick={addItem}>Add</button>
+            <button className="btn btn-primary" onClick={onSelect}>Selected</button>
+
+        </>
     );
+
 }
 
 export default PostsList;
+
+
