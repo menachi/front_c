@@ -1,83 +1,40 @@
 import PostsList from "./PostsList"
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface Post {
+  _id: string;
+  title: string;
+  content: string;
+  author: string;
+}
 
 function App() {
+  const [items, setItems] = useState<string[]>([]);
 
-  const name = 'Eliav'
-  const getName = () => {
-    return name
+  const getItems = async () => {
+    console.log("getItems")
+    try {
+      const response = await axios.get<Post[]>("http://localhost:3030/posts");
+      console.log(response.data);
+      setItems(response.data.map((post) => post.title));
+    } catch (error) {
+      console.log(error);
+    }
   }
-  console.log('App')
-  const items = ['item1', 'item2', 'item3']
 
-  const onItemsSelected = (index: number) => {
-    console.log('App - Selected index is', index)
-
-  }
+  useEffect(() => {
+    console.log("useEffect")
+    getItems();
+  }, []);
 
   return (
-    <>
-      <div style={{
-        backgroundColor: 'grey',
-        margin: '10px',
-        padding: '10px',
-        borderRadius: '10px',
-        width: '500px'
-      }}>
-        <h1>Hello, React {getName()}</h1>
-        <PostsList title="this is my array" items={items} onItemsSelected={onItemsSelected} />
-      </div>
-      <div style={{
-        backgroundColor: 'grey',
-        margin: '10px',
-        padding: '10px',
-        borderRadius: '10px',
-        width: '500px'
-      }}>
-        <h1>Hello, React {getName()}</h1>
-        <PostsList title="this is my array" items={items} onItemsSelected={onItemsSelected} />
-      </div>
-
-    </>
-
-  )
-}
-
-function App2() {
-  return (
-    <div style={{
-      width: '100vw',
-      height: '500px',
-      display: 'flex',
-      flexDirection: 'row-reverse',
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}>
-      <div style={{
-        backgroundColor: 'red',
-        width: '100px',
-        height: '100px'
-      }}>
-      </div>
-      <div style={{
-        backgroundColor: 'blue',
-        width: '100px',
-        height: '100px',
-        flex: 1,
-        position: 'absolute',
-        top: '50px',
-        right: '150px'
-
-      }}>
-      </div>
-      <div style={{
-        backgroundColor: 'yellow',
-        width: '100px',
-        height: '100%',
-        flex: 1
-      }}>
-      </div>
+    <div className="m-5">
+      <PostsList items={items} title="Posts" onItemsSelected={() => { }} />
     </div>
+
   )
 }
 
-export default App2
+
+export default App
