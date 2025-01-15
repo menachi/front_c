@@ -1,12 +1,12 @@
 import { useState, FC } from 'react';
 
 
-interface PostsListProps {
+interface ItemsListProps {
     title: string,
     items: string[],
     onItemsSelected: (index: number) => void
 }
-const PostsList: FC<PostsListProps> = ({ title, items, onItemsSelected }) => {
+const ItemsList: FC<ItemsListProps> = ({ title, items, onItemsSelected }) => {
     console.log('PostsList');
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [render, setRender] = useState(0);
@@ -51,6 +51,6 @@ const PostsList: FC<PostsListProps> = ({ title, items, onItemsSelected }) => {
 
 }
 
-export default PostsList;
+export default ItemsList;
 
 
